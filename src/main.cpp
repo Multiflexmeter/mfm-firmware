@@ -32,41 +32,6 @@ OneWire oneWire(ONE_WIRE_BUS);
 // Pass our oneWire reference to Dallas Temperature.
 DallasTemperature sensors(&oneWire);
 
-// the setup routine runs once when you press reset:
-void setup() {
-  pinMode(LED_PIN, OUTPUT);
-  pinMode(LORA_ON, OUTPUT);
-  pinMode(LORA_RESET, OUTPUT);
-  pinMode(JSN_ISO_5V_ON, OUTPUT);
-  pinMode(JSN_ISO_3V_ON, OUTPUT);
-
-  //turn on lora module and JSN
-  digitalWrite(LORA_ON, LOW);
-  digitalWrite(JSN_ISO_5V_ON, LOW);
-  digitalWrite(JSN_ISO_3V_ON, LOW);
-  led_on();
-
-  // Open serial communications and wait for port to open:
-  SerialUSB.begin(9600);
-  SerialLoRa.begin(57600);
-  SerialJSN.begin(9600);
-
-  //wait for the serials console to open
-  while (!SerialLoRa);
-  while (!SerialUSB);
-  while (!SerialJSN);
-
-  SerialUSB.println("Startup");
-
-#ifdef SEND_LORA
-  initialize_radio();
-#endif
-  led_off();
-
-  //start DS18B20
-  sensors.begin();
-}
-
 //initialize RN2483 LoRa module
 void initialize_radio()
 {
@@ -115,20 +80,6 @@ void initialize_radio()
   SerialUSB.println("Successfully joined TTN");
 }
 
-// the loop routine runs over and over again forever:
-void loop() {
-  led_on();
-  float corrected_distance = ReadCorrectedDistance();
-
-#ifdef SEND_LORA
-  SerialUSB.println("TXing");
-  myLora.tx(String(corrected_distance));
-#endif
-
-  led_off();
-  delay(2000);
-}
-
 void led_on()
 {
   digitalWrite(LED_PIN, HIGH);
@@ -137,20 +88,6 @@ void led_on()
 void led_off()
 {
   digitalWrite(LED_PIN, LOW);
-}
-
-//read distance and correct for ambient temperature
-float ReadCorrectedDistance() {
-  uint16_t distance_raw = readDistanceJSN();
-  float temperature_raw = ReadTemperature();
-  float corrected_distance = CorrectDistance(distance_raw, temperature_raw);
-  SerialUSB.print("Distance raw: ");
-  SerialUSB.print(distance_raw);
-  SerialUSB.print(", temperature raw: ");
-  SerialUSB.print(temperature_raw);
-  SerialUSB.print(", corrected distance: ");
-  SerialUSB.println(corrected_distance);
-  return corrected_distance;
 }
 
 //call with delay
@@ -211,4 +148,67 @@ float CorrectDistance(uint16_t dist, float temp) {
   float e2 = dist;
 
   return e2 - (e2 * ((340 - (331.3 * sqrt(1 + (d2 / 273.15) ))) / 340));
+}
+
+//read distance and correct for ambient temperature
+float ReadCorrectedDistance() {
+  uint16_t distance_raw = readDistanceJSN();
+  float temperature_raw = ReadTemperature();
+  float corrected_distance = CorrectDistance(distance_raw, temperature_raw);
+  SerialUSB.print("Distance raw: ");
+  SerialUSB.print(distance_raw);
+  SerialUSB.print(", temperature raw: ");
+  SerialUSB.print(temperature_raw);
+  SerialUSB.print(", corrected distance: ");
+  SerialUSB.println(corrected_distance);
+  return corrected_distance;
+}
+
+// the setup routine runs once when you press reset:
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(LORA_ON, OUTPUT);
+  pinMode(LORA_RESET, OUTPUT);
+  pinMode(JSN_ISO_5V_ON, OUTPUT);
+  pinMode(JSN_ISO_3V_ON, OUTPUT);
+
+  //turn on lora module and JSN
+  digitalWrite(LORA_ON, LOW);
+  digitalWrite(JSN_ISO_5V_ON, LOW);
+  digitalWrite(JSN_ISO_3V_ON, LOW);
+  led_on();
+
+  // Open serial communications and wait for port to open:
+  SerialUSB.begin(9600);
+  SerialLoRa.begin(57600);
+  SerialJSN.begin(9600);
+
+  //wait for the serials console to open
+  while (!SerialLoRa);
+  while (!SerialUSB);
+  while (!SerialJSN);
+
+  SerialUSB.println("Startup");
+
+#ifdef SEND_LORA
+  initialize_radio();
+#endif
+  led_off();
+
+  //start DS18B20
+  sensors.begin();
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  led_on();
+  float corrected_distance = ReadCorrectedDistance();
+
+#ifdef SEND_LORA
+  SerialUSB.println("TXing");
+  myLora.tx(String(corrected_distance));
+#endif
+
+  led_off();
+  delay(2000);
 }
