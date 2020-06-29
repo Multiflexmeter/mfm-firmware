@@ -12,6 +12,9 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <rn2xx3.h>
+#include "ArduinoLowPower.h"
+
+#define DEBUG
 
 // Data wire is plugged into port 2 on the Arduino
 #define ONE_WIRE_BUS 16
@@ -35,6 +38,9 @@ DallasTemperature sensors(&oneWire);
 //initialize RN2483 LoRa module
 void initialize_radio()
 {
+  #ifdef DEBUG
+      Serial.println("Starting LoRa initialization sequence");
+  #endif
   //reset RN2xx3
   digitalWrite(LORA_RESET, LOW);
   delay(200);
@@ -60,7 +66,7 @@ void initialize_radio()
   SerialUSB.println(myLora.sysver());
 
   //configure your keys and join the network
-  SerialUSB.println("Trying to join TTN");
+  SerialUSB.println("Trying to join KPN");
   bool join_result = false;
 
   myLora.setFrequencyPlan(TTN_EU);
@@ -69,7 +75,8 @@ void initialize_radio()
   //join_result = myLora.initABP("02017201", "8D7FFEF938589D95AAD928C2E2E7E48F", "AE17E567AECC8787F749A62F5541D522");
 
   //OTAA: initOTAA(String AppEUI, String AppKey);
-  join_result = myLora.initOTAA("70B3D57ED002CBB4", "73AF941FD6655EE83F6E701D6CB9006D");
+  //join_result = myLora.initOTAA("70B3D57ED002CBB4", "73AF941FD6655EE83F6E701D6CB9006D");    //TTN
+  join_result = myLora.initOTAA("bbcb55d73bdb64e5", "2f3e3dae90023eb56fb85e8caeef742c");      //KPN
 
   while (!join_result)
   {
@@ -78,15 +85,24 @@ void initialize_radio()
     join_result = myLora.init();
   }
   SerialUSB.println("Successfully joined TTN");
+  #ifdef DEBUG
+      Serial.println("Ended LoRa initialization sequence");
+  #endif
 }
 
 void led_on()
 {
+  #ifdef DEBUG
+      Serial.println("LED on");
+  #endif
   digitalWrite(LED_PIN, HIGH);
 }
 
 void led_off()
 {
+  #ifdef DEBUG
+      Serial.println("LED off");
+  #endif
   digitalWrite(LED_PIN, LOW);
 }
 
@@ -95,6 +111,10 @@ void led_off()
 uint16_t readDistanceJSN() {
   byte buforek[4];
   unsigned long start;
+
+  #ifdef DEBUG
+      Serial.println("Starting distance measurement");
+  #endif
 
   SerialJSN.write(0x55);                                                //request distance measurement
   delay(5);
@@ -116,11 +136,17 @@ uint16_t readDistanceJSN() {
   {
     return ((uint16_t)buforek[1] << 8) + buforek[2];                 //Two's complement make 16 bit int
   }
+  #ifdef DEBUG
+      Serial.println("Ended distance measurement");
+  #endif
   return 0;
 }
 
 //read the current ambient temperature
 float ReadTemperature() {
+#ifdef DEBUG
+      Serial.println("Starting temperature measurement");
+#endif
   //  SerialUSB.print("Requesting temperatures...");
   sensors.requestTemperatures(); // Send the command to get temperatures
   //  SerialUSB.println("DONE");
@@ -182,13 +208,18 @@ void setup() {
   SerialUSB.begin(9600);
   SerialLoRa.begin(57600);
   SerialJSN.begin(9600);
+  Serial.begin(9600);
 
   //wait for the serials console to open
   while (!SerialLoRa);
   while (!SerialUSB);
   while (!SerialJSN);
+  while (!Serial);
+#ifdef DEBUG
+  Serial.println("Startup");
+#endif
 
-  SerialUSB.println("Startup");
+SerialUSB.println("Startup");
 
 #ifdef SEND_LORA
   initialize_radio();
@@ -206,9 +237,28 @@ void loop() {
 
 #ifdef SEND_LORA
   SerialUSB.println("TXing");
+  Serial.println("TXing");
   myLora.tx(String(corrected_distance));
 #endif
-
   led_off();
-  delay(2000);
+
+  SerialUSB.println("Entering deep sleep mode.");
+  #ifdef DEBUG
+    Serial.println("Entering deep sleep mode.");
+  #endif
+	// Detach serial interface and enter deep sleep mode
+	USBDevice.detach(); 
+  Serial.end();
+  LowPower.sleep(4000);
+  
+  // Attach USB and serial interface and wait for serial port to open
+  USBDevice.attach(); 
+  Serial.begin(9600);
+  while(!SerialUSB);
+  while(!Serial);
+
+  SerialUSB.println("Wake up!");
+  #ifdef DEBUG
+    Serial.println("Wake up!");
+  #endif
 }
