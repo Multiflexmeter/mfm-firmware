@@ -72,11 +72,10 @@ void initialize_radio()
   myLora.setFrequencyPlan(TTN_EU);
 
   //ABP: initABP(String addr, String AppSKey, String NwkSKey);
-  //join_result = myLora.initABP("02017201", "8D7FFEF938589D95AAD928C2E2E7E48F", "AE17E567AECC8787F749A62F5541D522");
+  //join_result = myLora.initABP("<addr>", "<AppKey>", "<NwkSKey>");
 
   //OTAA: initOTAA(String AppEUI, String AppKey);
-  //join_result = myLora.initOTAA("70B3D57ED002CBB4", "73AF941FD6655EE83F6E701D6CB9006D");    //TTN
-  join_result = myLora.initOTAA("bbcb55d73bdb64e5", "2f3e3dae90023eb56fb85e8caeef742c");      //KPN
+  join_result = myLora.initOTAA("<AppEUI>", "<AppKey>");
 
   while (!join_result)
   {
