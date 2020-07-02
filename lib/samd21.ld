@@ -2,7 +2,7 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 SEARCH_DIR(.)
 MEMORY {
-    rom (rx) : ORIGIN = 0x00002000, LENGTH = 0x00040000
+        rom (rx) : ORIGIN = 0x00002000, LENGTH = 0x00040000 - 0x00002000
         ram (rwx) : ORIGIN = 0x20000000 + 0xB4, LENGTH = 0x00008000 - 0xB4
     }
     STACK_SIZE = DEFINED(STACK_SIZE) ? STACK_SIZE : DEFINED(__stack_size__) ? __stack_size__ : 0x2000;
