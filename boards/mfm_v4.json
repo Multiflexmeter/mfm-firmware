@@ -1,6 +1,6 @@
 {
   "build": {
-    "extra_flags": "-D__SAMD21G18A__ -Wl,-T./boards/mfm_v4/samd21.ld",
+    "extra_flags": "-D__SAMD21G18A__ -Wl,-T./src/mcu/samd21/flash.ld -I./boards/mfm_v4 -I./lib/samd21a/include -I./lib/cmsis/CMSIS/Include",
     "f_cpu": "8000000L",
     "cpu": "cortex-m0plus",
     "mcu": "samd21g18a"
