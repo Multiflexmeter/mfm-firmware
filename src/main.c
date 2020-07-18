@@ -1,5 +1,4 @@
 #include "main.h"
-#include "hal/gpio.h"
 
 void delay()
 {
@@ -11,12 +10,12 @@ void delay()
 
 int main(void)
 {
-  pinDir(0, 6, OUTPUT);
+  pinMode(LED, OUTPUT);
   while (1)
   {
-    pinWrite(0, 6, HIGH);
+    pinWrite(LED, HIGH);
     delay();
-    pinWrite(0, 6, LOW);
+    pinWrite(LED, LOW);
     delay();
   }
 }

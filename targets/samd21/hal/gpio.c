@@ -1,26 +1,31 @@
 #include "samd21.h"
+#include "pinNames.h"
 #include "hal/gpio.h"
 
-void pinDir(int group, int port, PinDirection direction)
+void pinMode(PinName pin, PinDirection direction)
 {
+  uint8_t port = PINPORT(pin);
+  uint8_t index = PININDEX(pin);
   if (direction == OUTPUT)
   {
-    PORT->Group[group].DIRSET.reg |= 1 << port;
+    PORT->Group[port].DIRSET.reg |= 1 << index;
   }
   else
   {
-    PORT->Group[group].DIRCLR.reg |= 1 << port;
+    PORT->Group[port].DIRCLR.reg |= 1 << index;
   }
 }
 
-void pinWrite(int group, int port, PinLevel level)
+void pinWrite(PinName pin, PinLevel level)
 {
+  uint8_t port = PINPORT(pin);
+  uint8_t index = PININDEX(pin);
   if (level == HIGH)
   {
-    PORT->Group[group].OUTSET.reg |= 1 << port;
+    PORT->Group[port].OUTSET.reg |= 1 << index;
   }
   else
   {
-    PORT->Group[group].OUTCLR.reg |= 1 << port;
+    PORT->Group[port].OUTCLR.reg |= 1 << index;
   }
 }

@@ -1,6 +1,8 @@
 #ifndef _gpio_h_
 #define _gpio_h_
 
+#include "pinNames.h"
+
 typedef enum
 {
   INPUT = 0,
@@ -18,8 +20,8 @@ extern "C"
 {
 #endif
 
-  void pinDir(int group, int pin, PinDirection val);
-  void pinWrite(int group, int pin, PinLevel val);
+  void pinMode(PinName pin, PinDirection val);
+  void pinWrite(PinName pin, PinLevel val);
 
 #ifdef __cplusplus
 }
