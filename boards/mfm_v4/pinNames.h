@@ -12,6 +12,7 @@
 
 typedef enum
 {
+  NC = 0xff,
   D0 = PINNAME(0, 0),
   D1,
   D2,
