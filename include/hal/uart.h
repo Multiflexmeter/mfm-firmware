@@ -10,7 +10,7 @@ extern "C"
 #endif
 
   void serial_init(PinName TX, PinName RX, uint32_t baud_rate);
-  int serial_getc();
+  uint8_t serial_getc();
   void serial_putc(uint8_t data);
 
 #ifdef __cplusplus

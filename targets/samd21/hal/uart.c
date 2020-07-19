@@ -63,7 +63,7 @@ void serial_init(PinName TX, PinName RX, uint32_t baud_rate)
     ;
 }
 
-int serial_getc()
+uint8_t serial_getc()
 {
   while (!SERCOM5->USART.INTFLAG.bit.RXC)
     ;
