@@ -4,6 +4,15 @@
 #include <stdint.h>
 #include "pinNames.h"
 
+struct uart_config
+{
+  PinName TX;
+  PinName RX;
+  uint16_t baud_rate;
+  uint8_t stop_bits;
+  uint8_t char_size;
+};
+
 #ifdef __cplusplus
 extern "C"
 {
