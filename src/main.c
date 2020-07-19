@@ -8,16 +8,20 @@ void delay()
   }
 }
 
+unsigned long lastTick = 0;
 int main(void)
 {
   init_system_clock();
 
   pinMode(LED, OUTPUT);
+  char state = 0;
   while (1)
   {
-    pinWrite(LED, HIGH);
-    delay();
-    pinWrite(LED, LOW);
-    delay();
+    if (millis() - lastTick >= 1000)
+    {
+      state = !state;
+      pinWrite(LED, state);
+      lastTick = millis();
+    }
   }
 }

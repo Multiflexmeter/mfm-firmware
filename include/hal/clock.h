@@ -9,6 +9,7 @@ extern "C"
 #endif
 
   void init_system_clock(void);
+  unsigned long millis();
 
 #ifdef __cplusplus
 }

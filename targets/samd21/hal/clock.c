@@ -31,4 +31,18 @@ void init_system_clock()
 
   // Update main clock speed
   SystemCoreClock = 8e6;
+
+  // Initialize systick interrupt every 1 ms
+  SysTick_Config(SystemCoreClock / 1000);
+}
+
+unsigned long sys_millis = 0;
+void SysTick_Handler()
+{
+  sys_millis++;
+}
+
+unsigned long millis()
+{
+  return sys_millis;
 }
