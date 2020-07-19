@@ -10,6 +10,8 @@ void delay()
 
 int main(void)
 {
+  init_system_clock();
+
   pinMode(LED, OUTPUT);
   while (1)
   {

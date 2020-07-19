@@ -3,6 +3,7 @@
 
 #include "board.h"
 #include "hal/gpio.h"
+#include "hal/clock.h"
 
 int main(void);
 
