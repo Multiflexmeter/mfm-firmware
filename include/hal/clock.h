@@ -1,12 +1,12 @@
 #ifndef _CLOCK_H_
 #define _CLOCK_H_
 
+unsigned long SystemCoreClock;
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-  unsigned long SystemCoreClock;
 
   void init_system_clock(void);
 
