@@ -1,12 +1,9 @@
 #include "main.h"
 #include "hal/uart.h"
 
-#define UART_TX D36
-#define UART_RX D37
-
-void delay(unsigned long timeMS)
+void delay(uint32_t timeMS)
 {
-  unsigned long till = millis() + timeMS;
+  uint32_t till = millis() + timeMS;
   while (millis() < till)
     ;
 }

@@ -1,15 +1,17 @@
 #ifndef _CLOCK_H_
 #define _CLOCK_H_
 
-unsigned long SystemCoreClock;
+#include <stdint.h>
+
+uint32_t SystemCoreClock;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-  void init_system_clock(void);
-  unsigned long millis();
+  void init_system_clock();
+  uint32_t millis();
 
 #ifdef __cplusplus
 }

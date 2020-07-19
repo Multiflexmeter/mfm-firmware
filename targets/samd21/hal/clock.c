@@ -36,13 +36,13 @@ void init_system_clock()
   SysTick_Config(SystemCoreClock / 1000);
 }
 
-unsigned long sys_millis = 0;
+uint32_t sys_millis = 0;
 void SysTick_Handler()
 {
   sys_millis++;
 }
 
-unsigned long millis()
+uint32_t millis()
 {
   return sys_millis;
 }

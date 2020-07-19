@@ -7,4 +7,7 @@
 
 #define LED D6
 
+#define UART_TX D36
+#define UART_RX D37
+
 #endif

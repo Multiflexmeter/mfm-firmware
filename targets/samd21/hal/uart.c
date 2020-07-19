@@ -3,9 +3,9 @@
 #include "pinNames.h"
 #include "sam.h"
 
-void enable_pmux(PinName pin, unsigned char peripheral)
+void enable_pmux(PinName pin, uint8_t peripheral)
 {
-  unsigned char pmux_pos = (PININDEX(pin) & 0x01u) * 4; // first bit indicated odd/even. If odd pos = 4 otherwise 0
+  uint8_t pmux_pos = (PININDEX(pin) & 0x01u) * 4; // first bit indicated odd/even. If odd pos = 4 otherwise 0
   uint8_t port = PINPORT(pin);
   uint8_t index = PININDEX(pin);
 
@@ -14,7 +14,7 @@ void enable_pmux(PinName pin, unsigned char peripheral)
   PORT->Group[port].PMUX[index / 2].reg |= peripheral << pmux_pos; // Set pmux peripheral
 }
 
-void serial_init(PinName TX, PinName RX, unsigned long baud_rate)
+void serial_init(PinName TX, PinName RX, uint32_t baud_rate)
 {
   /**
    * Configure RX TX Pins
@@ -70,7 +70,7 @@ int serial_getc()
   return (int)SERCOM5->USART.DATA.reg;
 }
 
-void serial_putc(char data)
+void serial_putc(uint8_t data)
 {
   while (!SERCOM5->USART.INTFLAG.bit.DRE)
     ;

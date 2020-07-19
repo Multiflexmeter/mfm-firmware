@@ -13,13 +13,13 @@ void init_system_clock()
   TCCR1B = 1 << CS11;                 // Set clock src/divider, thus enabling timer
 }
 
-unsigned long sys_millis = 0;
+uint32_t sys_millis = 0;
 ISR(TIMER1_COMPB_vect)
 {
   sys_millis++;
 }
 
-unsigned long millis()
+uint32_t millis()
 {
   return sys_millis;
 }
