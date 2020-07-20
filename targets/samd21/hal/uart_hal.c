@@ -14,19 +14,19 @@ void enable_pmux(PinName pin, uint8_t peripheral)
   PORT->Group[port].PMUX[index / 2].reg |= peripheral << pmux_pos; // Set pmux peripheral
 }
 
-void uart_init(PinName TX, PinName RX, uint32_t baud_rate)
+void uart_init(UART_Config *config)
 {
   /**
    * Configure RX TX Pins
    */
 
   // Configure TX/RX IN/OUT
-  pinMode(TX, OUTPUT);
-  pinMode(RX, INPUT);
+  pinMode(config->TX, OUTPUT);
+  pinMode(config->RX, INPUT);
 
   // Enable and set peripheral D (0x3)
-  enable_pmux(TX, 0x3);
-  enable_pmux(RX, 0x3);
+  enable_pmux(config->TX, 0x3);
+  enable_pmux(config->RX, 0x3);
 
   /**
    * Configure sercom5 clock and Peripheral power
@@ -52,7 +52,7 @@ void uart_init(PinName TX, PinName RX, uint32_t baud_rate)
 
   SERCOM5->USART.CTRLA.reg = SERCOM_USART_CTRLA_MODE(1) | SERCOM_USART_CTRLA_RXPO(3) | SERCOM_USART_CTRLA_TXPO(1) | SERCOM_USART_CTRLA_DORD;
   SERCOM5->USART.CTRLB.reg = SERCOM_USART_CTRLB_TXEN | SERCOM_USART_CTRLB_RXEN | SERCOM_USART_CTRLB_CHSIZE(0);
-  SERCOM5->USART.BAUD.reg = (uint16_t)(0xFFFF * (1 - (16 * (baud_rate / (double)SystemCoreClock))));
+  SERCOM5->USART.BAUD.reg = (uint16_t)(0xFFFF * (1 - (16 * (config->baud_rate / (double)SystemCoreClock))));
 
   while (SERCOM5->USART.SYNCBUSY.bit.CTRLB)
     ;

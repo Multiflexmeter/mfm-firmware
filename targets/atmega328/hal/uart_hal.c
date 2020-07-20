@@ -2,9 +2,9 @@
 #include "hal/clock_hal.h"
 #include "hal/uart_hal.h"
 
-void uart_init(PinName TX, PinName RX, uint32_t baud_rate)
+void uart_init(UART_Config *config)
 {
-  uint16_t baud = (uint16_t)(0xFFFF * (1 - (16 * (baud_rate / (double)SystemCoreClock))));
+  uint16_t baud = (uint16_t)(0xFFFF * (1 - (16 * (config->baud_rate / (double)SystemCoreClock))));
 
   // Set baud
   UBRR0H = baud >> 8;

@@ -4,21 +4,21 @@
 #include <stdint.h>
 #include "pinNames.h"
 
-struct UART_Config
+typedef struct
 {
   PinName TX;
   PinName RX;
   uint16_t baud_rate;
   uint8_t stop_bits;
   uint8_t char_size;
-};
+} UART_Config;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-  void uart_init(PinName TX, PinName RX, uint32_t baud_rate);
+  void uart_init(UART_Config *config);
   uint8_t uart_getc();
   void uart_putc(uint8_t data);
 
