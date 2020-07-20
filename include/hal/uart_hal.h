@@ -2,16 +2,7 @@
 #define _UART_HAL_H_
 
 #include <stdint.h>
-#include "pin_names.h"
-
-typedef struct
-{
-  PinName TX;
-  PinName RX;
-  uint16_t baud_rate;
-  uint8_t stop_bits;
-  uint8_t char_size;
-} UART_Config;
+#include "uart_common.h"
 
 #ifdef __cplusplus
 extern "C"

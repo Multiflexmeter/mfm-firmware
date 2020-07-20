@@ -1,15 +1,9 @@
-#include "peripheral/serial.hpp"
+#include "peripheral/serial.h"
 
-Serial::Serial(PinName RX, PinName TX, uint32_t baud_rate)
+Serial::Serial(UART_Config *config) : uart_config(config) {}
+
+void Serial::begin()
 {
-  UART_Config config = {};
-  config.RX = RX;
-  config.TX = TX;
-  config.baud_rate = baud_rate;
-  config.char_size = 0x8;
-  config.stop_bits = 0x1;
-
-  uart_config = &config;
   uart_init(uart_config);
 }
 

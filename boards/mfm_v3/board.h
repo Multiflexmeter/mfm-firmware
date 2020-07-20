@@ -3,12 +3,14 @@
 
 #include "avr/io.h"
 #include "pin_names.h"
+#include "peripheral/serial.h"
 
 // Used for board configuration
 
 #define LED B5
 
-#define UART_TX D1
-#define UART_RX D0
+UART_Config EDBG_Config = {
+    .sercom_index = 5,
+    .baud_rate = 9600};
 
 #endif

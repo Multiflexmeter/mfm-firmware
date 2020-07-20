@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "main.h"
 
 void delay(uint32_t timeMS)
 {
@@ -10,16 +10,20 @@ void delay(uint32_t timeMS)
 int main(void)
 {
   init_system_clock();
-  Serial serial(UART_RX, UART_TX, 9600);
 
   pinMode(LED, OUTPUT);
+
+  Serial EDBG(&EDBG_Config);
+  EDBG.begin();
+
+  // Loop forever
   while (1)
   {
     pinWrite(LED, HIGH);
-    serial.print("LED On! :) \r\n");
+    EDBG.print("LED On! :) \r\n");
     delay(1000);
     pinWrite(LED, LOW);
-    serial.print("LED Off! :( \r\n");
+    EDBG.print("LED Off! :( \r\n");
     delay(1000);
   }
 }

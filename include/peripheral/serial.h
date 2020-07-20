@@ -6,7 +6,8 @@
 class Serial
 {
 public:
-  Serial(PinName RX, PinName TX, uint32_t baud_rate);
+  Serial(UART_Config *config);
+  void begin();
   void print(const char *str);
 
 private:

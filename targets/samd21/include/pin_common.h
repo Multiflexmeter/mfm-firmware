@@ -6,9 +6,9 @@
 #define PORT_Pos 5
 #define PORT_Msk 0b111 << PORT_Pos
 
-#define PININDEX(PINNAME) (((unsigned char)PINNAME & PIN_Msk) >> PIN_Pos)
-#define PINPORT(PINNAME) (((unsigned char)PINNAME & PORT_Msk) >> PORT_Pos)
-#define PINNAME(PORT, INDEX) ((unsigned char)((PORT << PORT_Pos) | (INDEX << PIN_Pos)))
+#define PININDEX(PINNAME) (((uint8_t)PINNAME & PIN_Msk) >> PIN_Pos)
+#define PINPORT(PINNAME) (((uint8_t)PINNAME & PORT_Msk) >> PORT_Pos)
+#define PINNAME(PORT, INDEX) ((uint8_t)((PORT << PORT_Pos) | (INDEX << PIN_Pos)))
 
 typedef enum
 {

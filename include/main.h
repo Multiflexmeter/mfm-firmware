@@ -4,7 +4,7 @@
 #include "board.h"
 #include "hal/gpio_hal.h"
 #include "hal/clock_hal.h"
-#include "peripheral/serial.hpp"
+#include "peripheral/serial.h"
 
 int main(void);
 

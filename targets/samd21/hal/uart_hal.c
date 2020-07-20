@@ -3,6 +3,8 @@
 #include "pin_names.h"
 #include "sam.h"
 
+Sercom *sercom_list[] = SERCOM_INSTS;
+
 void enable_pmux(PinName pin, uint8_t peripheral)
 {
   uint8_t pmux_pos = (PININDEX(pin) & 0x01u) * 4; // first bit indicated odd/even. If odd pos = 4 otherwise 0
@@ -16,6 +18,9 @@ void enable_pmux(PinName pin, uint8_t peripheral)
 
 void uart_init(UART_Config *config)
 {
+  uint8_t sercom_index = config->sercom_index;
+  Sercom *sercom = sercom_list[sercom_index];
+
   /**
    * Configure RX TX Pins
    */
@@ -25,16 +30,15 @@ void uart_init(UART_Config *config)
   pinMode(config->RX, INPUT);
 
   // Enable and set peripheral D (0x3)
-  enable_pmux(config->TX, 0x3);
-  enable_pmux(config->RX, 0x3);
+  enable_pmux(config->TX, config->peripheral);
+  enable_pmux(config->RX, config->peripheral);
 
   /**
    * Configure sercom5 clock and Peripheral power
    */
 
-  PM->APBCMASK.reg |= PM_APBCMASK_SERCOM5;
-
-  GCLK->CLKCTRL.reg = GCLK_CLKCTRL_ID_SERCOM5_CORE | GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_WRTLOCK;
+  PM->APBCMASK.reg |= 1 << (PM_APBCMASK_SERCOM0_Pos + sercom_index);
+  GCLK->CLKCTRL.reg = (GCLK_CLKCTRL_ID_SERCOM0_CORE_Val + sercom_index) << GCLK_CLKCTRL_ID_Pos | GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_WRTLOCK;
 
   /**
    * Enable SERCOM power
@@ -42,37 +46,45 @@ void uart_init(UART_Config *config)
    * Configure SERCOM to UART
    * Enable interrupts
    */
-  SERCOM5->USART.CTRLA.bit.ENABLE = 0;
-  while (SERCOM5->USART.SYNCBUSY.bit.ENABLE)
+  sercom->USART.CTRLA.bit.ENABLE = 0;
+  while (sercom->USART.SYNCBUSY.bit.ENABLE)
     ;
 
-  SERCOM5->USART.CTRLA.bit.SWRST = 1;
-  while (SERCOM5->USART.SYNCBUSY.bit.SWRST)
+  sercom->USART.CTRLA.bit.SWRST = 1;
+  while (sercom->USART.SYNCBUSY.bit.SWRST)
     ;
 
-  SERCOM5->USART.CTRLA.reg = SERCOM_USART_CTRLA_MODE(1) | SERCOM_USART_CTRLA_RXPO(3) | SERCOM_USART_CTRLA_TXPO(1) | SERCOM_USART_CTRLA_DORD;
-  SERCOM5->USART.CTRLB.reg = SERCOM_USART_CTRLB_TXEN | SERCOM_USART_CTRLB_RXEN | SERCOM_USART_CTRLB_CHSIZE(0);
-  SERCOM5->USART.BAUD.reg = (uint16_t)(0xFFFF * (1 - (16 * (config->baud_rate / (double)SystemCoreClock))));
+  sercom->USART.CTRLA.reg = SERCOM_USART_CTRLA_MODE(1) | SERCOM_USART_CTRLA_RXPO(config->RX_pad) | SERCOM_USART_CTRLA_TXPO(config->TX_pad) | SERCOM_USART_CTRLA_DORD;
+  sercom->USART.CTRLB.reg = SERCOM_USART_CTRLB_TXEN | SERCOM_USART_CTRLB_RXEN | SERCOM_USART_CTRLB_CHSIZE(0);
+  sercom->USART.BAUD.reg = (uint16_t)(0xFFFF * (1 - (16 * (config->baud_rate / (double)SystemCoreClock))));
 
-  while (SERCOM5->USART.SYNCBUSY.bit.CTRLB)
+  while (sercom->USART.SYNCBUSY.bit.CTRLB)
     ;
 
-  SERCOM5->USART.CTRLA.bit.ENABLE = 1;
+  sercom->USART.CTRLA.bit.ENABLE = 1;
 
-  while (SERCOM5->USART.SYNCBUSY.bit.ENABLE)
+  while (sercom->USART.SYNCBUSY.bit.ENABLE)
     ;
 }
 
 uint8_t uart_getc(UART_Config *config)
 {
-  while (!SERCOM5->USART.INTFLAG.bit.RXC)
+
+  uint8_t sercom_index = config->sercom_index;
+  Sercom *sercom = sercom_list[sercom_index];
+
+  while (!sercom->USART.INTFLAG.bit.RXC)
     ;
-  return (int)SERCOM5->USART.DATA.reg;
+  return (int)sercom->USART.DATA.reg;
 }
 
 void uart_putc(UART_Config *config, uint8_t data)
 {
-  while (!SERCOM5->USART.INTFLAG.bit.DRE)
+
+  uint8_t sercom_index = config->sercom_index;
+  Sercom *sercom = sercom_list[sercom_index];
+
+  while (!sercom->USART.INTFLAG.bit.DRE)
     ;
-  SERCOM5->USART.DATA.reg = data & 0xFF;
+  sercom->USART.DATA.reg = data & 0xFF;
 }
