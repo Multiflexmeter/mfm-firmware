@@ -1,6 +1,6 @@
 #include "hal/uart_hal.h"
 #include "hal/gpio_hal.h"
-#include "pinNames.h"
+#include "pin_names.h"
 #include "sam.h"
 
 void enable_pmux(PinName pin, uint8_t peripheral)

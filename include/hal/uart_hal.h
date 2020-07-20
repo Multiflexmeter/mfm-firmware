@@ -2,7 +2,7 @@
 #define _UART_HAL_H_
 
 #include <stdint.h>
-#include "pinNames.h"
+#include "pin_names.h"
 
 typedef struct
 {

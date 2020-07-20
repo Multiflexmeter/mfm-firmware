@@ -1,5 +1,5 @@
 #include <avr/io.h>
-#include <pinNames.h>
+#include <pin_names.h>
 #include "hal/gpio_hal.h"
 
 void pinMode(PinName pin, PinDirection direction)

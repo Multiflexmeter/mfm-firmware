@@ -1,7 +1,7 @@
 #ifndef _GPIO_HAL_H_
 #define _GPIO_HAL_H_
 
-#include "pinNames.h"
+#include "pin_names.h"
 
 typedef enum
 {

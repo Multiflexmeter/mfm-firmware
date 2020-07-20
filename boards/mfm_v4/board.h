@@ -2,7 +2,7 @@
 #define _board_h_
 
 #include "sam.h"
-#include "pinNames.h"
+#include "pin_names.h"
 
 // Used for board configuration
 #define LED A06
