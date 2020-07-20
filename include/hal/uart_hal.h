@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "pinNames.h"
 
-struct uart_config
+struct UART_Config
 {
   PinName TX;
   PinName RX;
