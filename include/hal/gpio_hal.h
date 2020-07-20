@@ -1,5 +1,5 @@
-#ifndef _gpio_h_
-#define _gpio_h_
+#ifndef _GPIO_HAL_H_
+#define _GPIO_HAL_H_
 
 #include "pinNames.h"
 
@@ -26,4 +26,4 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-#endif
+#endif // _GPIO_HAL_H_

@@ -1,5 +1,4 @@
 #include "main.h"
-#include "hal/uart.h"
 
 void delay(uint32_t timeMS)
 {

@@ -1,5 +1,5 @@
-#include "hal/uart.h"
-#include "hal/gpio.h"
+#include "hal/uart_hal.h"
+#include "hal/gpio_hal.h"
 #include "pinNames.h"
 #include "sam.h"
 

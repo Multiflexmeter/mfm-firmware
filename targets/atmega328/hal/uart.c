@@ -1,6 +1,6 @@
 #include <avr/io.h>
-#include "hal/clock.h"
-#include "hal/uart.h"
+#include "hal/clock_hal.h"
+#include "hal/uart_hal.h"
 
 void serial_init(PinName TX, PinName RX, uint32_t baud_rate)
 {

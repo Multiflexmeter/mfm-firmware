@@ -1,5 +1,5 @@
-#ifndef _UART_H_
-#define _UART_H_
+#ifndef _UART_HAL_H_
+#define _UART_HAL_H_
 
 #include <stdint.h>
 #include "pinNames.h"
@@ -26,4 +26,4 @@ extern "C"
 }
 #endif
 
-#endif // _UART_H_
+#endif // _UART_HAL_H_

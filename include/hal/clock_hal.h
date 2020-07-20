@@ -1,5 +1,5 @@
-#ifndef _CLOCK_H_
-#define _CLOCK_H_
+#ifndef _CLOCK_HAL_H_
+#define _CLOCK_HAL_H_
 
 #include <stdint.h>
 
@@ -16,4 +16,4 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-#endif // _CLOCK_H_
+#endif // _CLOCK_HAL_H_

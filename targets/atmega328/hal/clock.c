@@ -1,4 +1,4 @@
-#include "hal/clock.h"
+#include "hal/clock_hal.h"
 #include "avr/io.h"
 
 void init_system_clock()

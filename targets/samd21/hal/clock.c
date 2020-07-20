@@ -1,5 +1,5 @@
 #include "sam.h"
-#include "hal/clock.h"
+#include "hal/clock_hal.h"
 
 void wait_xosc_ready()
 {
