@@ -14,7 +14,7 @@ void enable_pmux(PinName pin, uint8_t peripheral)
   PORT->Group[port].PMUX[index / 2].reg |= peripheral << pmux_pos; // Set pmux peripheral
 }
 
-void serial_init(PinName TX, PinName RX, uint32_t baud_rate)
+void uart_init(PinName TX, PinName RX, uint32_t baud_rate)
 {
   /**
    * Configure RX TX Pins
@@ -63,14 +63,14 @@ void serial_init(PinName TX, PinName RX, uint32_t baud_rate)
     ;
 }
 
-uint8_t serial_getc()
+uint8_t uart_getc()
 {
   while (!SERCOM5->USART.INTFLAG.bit.RXC)
     ;
   return (int)SERCOM5->USART.DATA.reg;
 }
 
-void serial_putc(uint8_t data)
+void uart_putc(uint8_t data)
 {
   while (!SERCOM5->USART.INTFLAG.bit.DRE)
     ;

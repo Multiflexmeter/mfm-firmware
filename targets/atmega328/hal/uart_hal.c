@@ -2,7 +2,7 @@
 #include "hal/clock_hal.h"
 #include "hal/uart_hal.h"
 
-void serial_init(PinName TX, PinName RX, uint32_t baud_rate)
+void uart_init(PinName TX, PinName RX, uint32_t baud_rate)
 {
   uint16_t baud = (uint16_t)(0xFFFF * (1 - (16 * (baud_rate / (double)SystemCoreClock))));
 
@@ -17,7 +17,7 @@ void serial_init(PinName TX, PinName RX, uint32_t baud_rate)
   UCSR0C = (1 << UCSZ00) | (1 << UCSZ01);
 }
 
-uint8_t serial_getc()
+uint8_t uart_getc()
 {
   while (!(UCSR0A & (1 << RXC0)))
     ;
@@ -25,7 +25,7 @@ uint8_t serial_getc()
   return UDR0 & 0xFF;
 }
 
-void serial_putc(uint8_t data)
+void uart_putc(uint8_t data)
 {
   while (!(UCSR0A & (1 << UDRE0)))
     ;

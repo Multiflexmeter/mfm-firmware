@@ -18,9 +18,9 @@ extern "C"
 {
 #endif
 
-  void serial_init(PinName TX, PinName RX, uint32_t baud_rate);
-  uint8_t serial_getc();
-  void serial_putc(uint8_t data);
+  void uart_init(PinName TX, PinName RX, uint32_t baud_rate);
+  uint8_t uart_getc();
+  void uart_putc(uint8_t data);
 
 #ifdef __cplusplus
 }
