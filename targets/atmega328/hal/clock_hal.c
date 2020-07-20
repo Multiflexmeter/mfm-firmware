@@ -1,5 +1,6 @@
-#include "hal/clock_hal.h"
 #include "avr/io.h"
+#include "avr/interrupt.h"
+#include "hal/clock_hal.h"
 
 void init_system_clock()
 {
