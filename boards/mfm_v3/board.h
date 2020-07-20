@@ -1,6 +1,7 @@
 #ifndef _board_h_
 #define _board_h_
 
+#include "avr/io.h"
 #include "pinNames.h"
 
 // Used for board configuration
