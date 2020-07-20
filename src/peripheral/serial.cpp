@@ -17,6 +17,6 @@ void Serial::print(const char *ptr)
 {
   do
   {
-    uart_putc(*ptr++);
+    uart_putc(uart_config, *ptr++);
   } while (*ptr != '\0');
 }

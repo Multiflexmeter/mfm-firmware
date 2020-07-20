@@ -19,8 +19,8 @@ extern "C"
 #endif
 
   void uart_init(UART_Config *config);
-  uint8_t uart_getc();
-  void uart_putc(uint8_t data);
+  uint8_t uart_getc(UART_Config *config);
+  void uart_putc(UART_Config *config, uint8_t data);
 
 #ifdef __cplusplus
 }

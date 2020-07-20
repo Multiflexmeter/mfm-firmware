@@ -63,14 +63,14 @@ void uart_init(UART_Config *config)
     ;
 }
 
-uint8_t uart_getc()
+uint8_t uart_getc(UART_Config *config)
 {
   while (!SERCOM5->USART.INTFLAG.bit.RXC)
     ;
   return (int)SERCOM5->USART.DATA.reg;
 }
 
-void uart_putc(uint8_t data)
+void uart_putc(UART_Config *config, uint8_t data)
 {
   while (!SERCOM5->USART.INTFLAG.bit.DRE)
     ;

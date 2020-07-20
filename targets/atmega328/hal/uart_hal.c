@@ -17,7 +17,7 @@ void uart_init(UART_Config *config)
   UCSR0C = (1 << UCSZ00) | (1 << UCSZ01);
 }
 
-uint8_t uart_getc()
+uint8_t uart_getc(UART_Config *config)
 {
   while (!(UCSR0A & (1 << RXC0)))
     ;
@@ -25,7 +25,7 @@ uint8_t uart_getc()
   return UDR0 & 0xFF;
 }
 
-void uart_putc(uint8_t data)
+void uart_putc(UART_Config *config, uint8_t data)
 {
   while (!(UCSR0A & (1 << UDRE0)))
     ;
