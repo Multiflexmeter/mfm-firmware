@@ -6,7 +6,7 @@
 
 // Used for board configuration
 
-#define LED D13
+#define LED B5
 
 #define UART_TX D1
 #define UART_RX D0

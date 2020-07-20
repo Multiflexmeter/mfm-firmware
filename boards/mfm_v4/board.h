@@ -5,9 +5,9 @@
 #include "pinNames.h"
 
 // Used for board configuration
-#define LED D6
+#define LED A06
 
-#define UART_TX D36
-#define UART_RX D37
+#define UART_TX B22
+#define UART_RX B23
 
 #endif
