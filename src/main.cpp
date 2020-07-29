@@ -12,7 +12,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <rn2xx3.h>
-#include "ArduinoLowPower.h"
+#include <ArduinoLowPower.h>
 
 #define DEBUG
 
@@ -26,7 +26,7 @@
 
 
 #define receiveTimeout 90 //for JSN serial read
-#define SEND_LORA
+//#define SEND_LORA
 
 //create an instance of the rn2xx3 library
 rn2xx3 myLora(SerialLoRa);
@@ -189,6 +189,46 @@ float ReadCorrectedDistance() {
   return corrected_distance;
 }
 
+void wakeup() {
+  // This function will be called once on device wakeup
+  // You can do some little operations here (like changing variables which will be used in the loop)
+  // Remember to avoid calling delay() and long running functions since this functions executes in interrupt context
+
+  // Attach USB and serial interface and wait for serial port to open
+  USBDevice.attach(); 
+  Serial.begin(9600);
+  //while(!SerialUSB);
+  //while(!Serial);
+  delay(100);
+
+  SerialUSB.println("Wake up!");
+  #ifdef DEBUG
+    Serial.println("Wake up!");
+  #endif
+
+  digitalWrite(LORA_ON, LOW);
+  digitalWrite(JSN_ISO_5V_ON, LOW);
+  digitalWrite(JSN_ISO_3V_ON, LOW);
+}
+
+void sleep(){
+  digitalWrite(LORA_ON, HIGH);
+  digitalWrite(JSN_ISO_5V_ON, HIGH);
+  digitalWrite(JSN_ISO_3V_ON, HIGH);
+
+  SerialUSB.println("Entering deep sleep mode.");
+  #ifdef DEBUG
+    Serial.println("Entering deep sleep mode.");
+  #endif
+	// Detach serial interface and enter deep sleep mode
+  SerialUSB.flush();
+  Serial.flush();
+  USBDevice.detach(); 
+  Serial.end();
+
+  LowPower.sleep(4000);   //will call wakeup() with RTC interrupt
+}
+
 // the setup routine runs once when you press reset:
 void setup() {
   pinMode(LED_PIN, OUTPUT);
@@ -211,7 +251,7 @@ void setup() {
 
   //wait for the serials console to open
   while (!SerialLoRa);
-  while (!SerialUSB);
+  //while (!SerialUSB);
   while (!SerialJSN);
   while (!Serial);
 #ifdef DEBUG
@@ -227,37 +267,22 @@ SerialUSB.println("Startup");
 
   //start DS18B20
   sensors.begin();
+
+  LowPower.attachInterruptWakeup(RTC_ALARM_WAKEUP, wakeup, CHANGE);
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
   led_on();
-  float corrected_distance = ReadCorrectedDistance();
-
 #ifdef SEND_LORA
+  float corrected_distance = ReadCorrectedDistance();
   SerialUSB.println("TXing");
   Serial.println("TXing");
   myLora.tx(String(corrected_distance));
+#else
+  delay(2000);
 #endif
   led_off();
 
-  SerialUSB.println("Entering deep sleep mode.");
-  #ifdef DEBUG
-    Serial.println("Entering deep sleep mode.");
-  #endif
-	// Detach serial interface and enter deep sleep mode
-	USBDevice.detach(); 
-  Serial.end();
-  LowPower.sleep(4000);
-  
-  // Attach USB and serial interface and wait for serial port to open
-  USBDevice.attach(); 
-  Serial.begin(9600);
-  while(!SerialUSB);
-  while(!Serial);
-
-  SerialUSB.println("Wake up!");
-  #ifdef DEBUG
-    Serial.println("Wake up!");
-  #endif
+  sleep();
 }
