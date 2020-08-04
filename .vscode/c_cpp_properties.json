@@ -1,0 +1,54 @@
+{
+    "configurations": [
+        {
+            "name": "!!! WARNING !!! AUTO-GENERATED FILE, PLEASE DO NOT MODIFY IT AND USE https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "/home/timvosch/src/mfm-v4/include",
+                "/home/timvosch/src/mfm-v4/src",
+                "/home/timvosch/src/mfm-v4/boards/mfm_v4",
+                "/home/timvosch/src/mfm-v4/targets/samd21/include",
+                "/home/timvosch/src/mfm-v4/lib/samd21a/include",
+                "/home/timvosch/src/mfm-v4/lib/cmsis/CMSIS/Include",
+                "/home/timvosch/src/mfm-v4/lib/cmsis",
+                "/home/timvosch/src/mfm-v4/lib/samd21a",
+                "/home/timvosch/.platformio/packages/tool-unity",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/timvosch/src/mfm-v4/include",
+                    "/home/timvosch/src/mfm-v4/src",
+                    "/home/timvosch/src/mfm-v4/boards/mfm_v4",
+                    "/home/timvosch/src/mfm-v4/targets/samd21/include",
+                    "/home/timvosch/src/mfm-v4/lib/samd21a/include",
+                    "/home/timvosch/src/mfm-v4/lib/cmsis/CMSIS/Include",
+                    "/home/timvosch/src/mfm-v4/lib/cmsis",
+                    "/home/timvosch/src/mfm-v4/lib/samd21a",
+                    "/home/timvosch/.platformio/packages/tool-unity",
+                    ""
+                ]
+            },
+            "defines": [
+                "F_CPU=8000000L",
+                "USBCON",
+                "PLATFORMIO=40304",
+                "__SAMD21G18A__",
+                ""
+            ],
+            "intelliSenseMode": "clang-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/home/timvosch/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-gcc",
+            "compilerArgs": [
+                "-mthumb",
+                "-mcpu=cortex-m0plus",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
